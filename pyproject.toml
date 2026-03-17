@@ -4,4 +4,10 @@ version = "0.0.0"
 dependencies = [
   "numpy",
   "zarr",
+  "grpcio>=1.62",
+  "grpcio-tools>=1.62",
 ]
+
+[project.scripts]
+null-next-state-generate-proto = "null_labs_helpers.next_state_plugin.generate_proto:main"
+null-next-state-grpc = "null_labs_helpers.next_state_plugin.grpc_server:main"

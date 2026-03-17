@@ -1,0 +1,75 @@
+﻿syntax = "proto3";
+
+package null_labs.next_state.v1;
+
+service NextStateService {
+  rpc Health(HealthRequest) returns (HealthResponse);
+  rpc Initialize(InitializeRequest) returns (InitializeResponse);
+  rpc NextState(NextStateRequest) returns (NextStateResponse);
+  rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
+}
+
+message HealthRequest {}
+
+message HealthResponse {
+  string status = 1;
+  string provider_version = 2;
+  repeated string capabilities = 3;
+}
+
+message StringList {
+  repeated string values = 1;
+}
+
+message InitializeRequest {
+  string session_id = 1;
+  string scenario_id = 2;
+  double dt_seconds = 3;
+  repeated string sim_entity_ids = 4;
+  map<string, string> metadata = 5;
+}
+
+message InitializeResponse {
+  string status = 1;
+  string error = 2;
+  map<string, StringList> stack_assignments = 3;
+  map<string, string> metadata = 4;
+}
+
+message SensorPacket {
+  string sensor_id = 1;
+  string capture_label = 2;
+  string scene_id = 3;
+  string modality = 4;
+  string format = 5;
+  bytes image_bytes = 6;
+  string path_hint = 7;
+}
+
+message EntityState {
+  repeated double position_m = 1;
+  repeated double euler_rpy_rad = 2;
+}
+
+message NextStateRequest {
+  string session_id = 1;
+  int64 step_index = 2;
+  double dt_seconds = 3;
+  map<string, EntityState> cur_state = 4;
+  repeated SensorPacket sensor_packets = 5;
+}
+
+message NextStateResponse {
+  string status = 1;
+  string error = 2;
+  map<string, EntityState> next_state = 3;
+}
+
+message ShutdownRequest {
+  string session_id = 1;
+}
+
+message ShutdownResponse {
+  string status = 1;
+  string error = 2;
+}
