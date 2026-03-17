@@ -14,9 +14,9 @@ def read_group_to_dict(g):
         out[k] = v
     return out
 
-def read_trajectory_metadata_zarr(trajectories_path):
-    store = LocalStore(trajectories_path)
+def read_metadata_zarr(data_path):
+    store = LocalStore(data_path)
     zarr_data = zarr.open_group(store=store, mode='r')
-    trajectories_data = read_group_to_dict(zarr_data)
+    metadata_data = read_group_to_dict(zarr_data)
 
-    return trajectories_data
+    return metadata_data
